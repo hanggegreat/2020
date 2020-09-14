@@ -1,4 +1,4 @@
-package cn.lollipop.netty;
+package cn.lollipop.netty.chat;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -18,6 +18,8 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         pipeline.addLast("ChunkedWriteHandler", new ChunkedWriteHandler());
         pipeline.addLast("HttpObjectAggregator", new HttpObjectAggregator(1024 * 64));
         pipeline.addLast("WebSocketServerProtocolHandler", new WebSocketServerProtocolHandler("/ws"));
+
+        pipeline.addLast("CustomHandler", new CustomHandler());
 
         pipeline.addLast("ChatHandler", new ChatHandler());
     }

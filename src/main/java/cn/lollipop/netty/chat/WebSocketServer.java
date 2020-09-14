@@ -1,4 +1,4 @@
-package cn.lollipop.netty;
+package cn.lollipop.netty.chat;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -17,12 +17,11 @@ public class WebSocketServer {
                 .childHandler(new WebSocketServerInitializer());
 
         try {
-            ChannelFuture channelFuture = serverBootstrap.bind(80).sync();
+            ChannelFuture channelFuture = serverBootstrap.bind("0.0.0.0", 80).sync();
             channelFuture.channel().closeFuture().sync();
-        }catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }

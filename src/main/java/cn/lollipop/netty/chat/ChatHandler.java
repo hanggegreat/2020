@@ -1,4 +1,4 @@
-package cn.lollipop.netty;
+package cn.lollipop.netty.chat;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
