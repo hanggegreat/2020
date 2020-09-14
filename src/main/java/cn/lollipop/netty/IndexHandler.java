@@ -8,7 +8,11 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 
-public class CustomHandler extends SimpleChannelInboundHandler<HttpObject> {
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+public class IndexHandler extends SimpleChannelInboundHandler<HttpObject> {
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
         if (!(msg instanceof HttpRequest)) {
             return;
@@ -18,7 +22,7 @@ public class CustomHandler extends SimpleChannelInboundHandler<HttpObject> {
 
         System.out.println(channel.remoteAddress());
 
-        ByteBuf content = Unpooled.copiedBuffer("Hello netty~", CharsetUtil.UTF_8);
+        ByteBuf content = Unpooled.copiedBuffer(Files.readString(Path.of(getClass().getClassLoader().getResource("index.html").toURI())), CharsetUtil.UTF_8);
 
         FullHttpResponse response = new DefaultFullHttpResponse(
                 HttpVersion.HTTP_1_1,
@@ -26,7 +30,7 @@ public class CustomHandler extends SimpleChannelInboundHandler<HttpObject> {
                 content
         );
 
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
+        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "html");
         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, content.readableBytes());
 
         ctx.writeAndFlush(response);

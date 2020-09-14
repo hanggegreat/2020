@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>chat room</title>
+</head>
+<body>
+<div>
+    <label for="sendMsg">发送消息：</label>
+    <input type="text" id="sendMsg"/>
+    <button onclick="CHAT.send(document.getElementById('sendMsg').value)">发送</button>
+</div>
+
+<div>
+    <label for="msgContent">接收消息：</label>
+    <div id="msgContent" style="background-color: lemonchiffon">
+
+    </div>
+</div>
+
+<script>
+    window.CHAT = {
+        ws: null,
+        init: () => {
+            if (window.WebSocket) {
+                ws = new WebSocket("ws://localhost/ws")
+
+                ws.onopen = () => {
+                    console.log("websocket连接建立")
+                }
+
+                ws.onclose = () => {
+                    console.log("websocket连接关闭")
+                }
+
+                ws.onerror = () => {
+                    console.log("websocket连接出错")
+                }
+
+                ws.onmessage = (e) => {
+                    console.log("接收到消息：" + e.data)
+                    document.getElementById("msgContent").innerHTML += "<br/>" + e.data
+                }
+            } else {
+                alert("???????你有毒！")
+            }
+        },
+
+        send: (msg) => {
+            ws.send(msg)
+        }
+    }
+
+    window.onload = () => {
+        CHAT.init()
+    }
+</script>
+</body>
+</html>
