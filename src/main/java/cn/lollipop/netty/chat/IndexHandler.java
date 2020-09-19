@@ -11,7 +11,7 @@ import io.netty.util.CharsetUtil;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class CustomHandler extends SimpleChannelInboundHandler<HttpObject> {
+public class IndexHandler extends SimpleChannelInboundHandler<HttpObject> {
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
         if (!(msg instanceof HttpRequest)) {
             return;
@@ -22,7 +22,6 @@ public class CustomHandler extends SimpleChannelInboundHandler<HttpObject> {
         System.out.println(channel.remoteAddress());
 
         ByteBuf content = Unpooled.copiedBuffer(Files.readString(Path.of(getClass().getResource("/template/index.html").toURI())), CharsetUtil.UTF_8);
-
         FullHttpResponse response = new DefaultFullHttpResponse(
                 HttpVersion.HTTP_1_1,
                 HttpResponseStatus.OK,
