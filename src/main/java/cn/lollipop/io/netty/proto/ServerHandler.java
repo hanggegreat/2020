@@ -1,29 +1,27 @@
 package cn.lollipop.io.netty.proto;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.TimeUnit;
 
 /**
  * 入站handler
  */
 @Slf4j
-public class ServerHandler extends SimpleChannelInboundHandler<StudentPOJO.Student> {
+public class ServerHandler extends SimpleChannelInboundHandler<DataInfo.Data> {
 
     /**
      * 可读时调用
      *
-     * @param ctx     上下文，包含pipeline channel 等
-     * @param student 客户端发送的数据
+     * @param ctx  上下文，包含pipeline channel 等
+     * @param data 客户端发送的数据
      * @throws Exception
      */
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, StudentPOJO.Student student) throws Exception {
-        log.info("客户端：{} 发来消息：id: {}, name: {}", ctx.channel().remoteAddress(), student.getId(), student.getName());
+    public void channelRead0(ChannelHandlerContext ctx, DataInfo.Data data) throws Exception {
+        log.info("客户端：{} 发来消息：{}", ctx.channel().remoteAddress(), data.getDatatype() == DataInfo.Data.DataType.StudentType ? data.getStudent() : data.getTeacher());
     }
 
     /**

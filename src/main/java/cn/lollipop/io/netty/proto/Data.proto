@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option optimize_for = SPEED; // 加快解析
+//option java_package = "cn.lollipop.io.netty.proto";
+option java_outer_classname = "DataInfo"; // 外部类名
+
+message Data {
+  enum DataType {
+    StudentType = 0;
+    TeacherType = 1;
+  }
+
+  DataType datatype = 1;
+
+  oneof content {
+    Student student = 2;
+    Teacher teacher = 3;
+  }
+}
+
+message Student {
+  int32 id = 1;
+  string name = 2;
+}
+
+message Teacher {
+  string name = 1;
+  int32 age = 2;
+}

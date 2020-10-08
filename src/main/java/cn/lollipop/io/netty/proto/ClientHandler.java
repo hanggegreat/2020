@@ -17,9 +17,9 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        StudentPOJO.Student student = StudentPOJO.Student.newBuilder().setId(8).setName("student8号").build();
+        DataInfo.Data data = DataInfo.Data.newBuilder().setStudent(DataInfo.Student.newBuilder().setId(8).setName("student8号").build()).build();
         log.info("ctx: {}", ctx);
-        ctx.writeAndFlush(student);
+        ctx.writeAndFlush(data);
     }
 
     // 可读时触发

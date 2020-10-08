@@ -28,7 +28,7 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        socketChannel.pipeline().addLast("decoder", new ProtobufDecoder(StudentPOJO.Student.getDefaultInstance()));
+                        socketChannel.pipeline().addLast("decoder", new ProtobufDecoder(DataInfo.Data.getDefaultInstance()));
                         socketChannel.pipeline().addLast(new ServerHandler());
                     }
                 });
