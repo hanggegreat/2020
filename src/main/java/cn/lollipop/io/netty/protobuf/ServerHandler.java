@@ -1,4 +1,4 @@
-package cn.lollipop.io.netty.proto;
+package cn.lollipop.io.netty.protobuf;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
