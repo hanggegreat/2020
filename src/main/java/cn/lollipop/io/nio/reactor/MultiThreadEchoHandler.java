@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @author zhangyuanhang
  */
 @Slf4j
-public class EchoHandler {
+public class MultiThreadEchoHandler {
     private final ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(0), new ThreadPoolExecutor.AbortPolicy());
 
     private SocketChannel socketChannel;
@@ -30,7 +30,7 @@ public class EchoHandler {
 
     private int state = RECEIVING;
 
-    public EchoHandler(SocketChannel socketChannel, Selector selector) {
+    public MultiThreadEchoHandler(SocketChannel socketChannel, Selector selector) {
         try {
             this.socketChannel = socketChannel;
             socketChannel.configureBlocking(false);

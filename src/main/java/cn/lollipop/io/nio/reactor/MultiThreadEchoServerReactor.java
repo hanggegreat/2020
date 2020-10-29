@@ -17,14 +17,14 @@ import java.util.concurrent.TimeUnit;
  * @author zhangyuanhang
  */
 @Slf4j
-public class EchoServerReactor {
+public class MultiThreadEchoServerReactor {
 
     private final Selector selector;
     private final ServerSocketChannel serverSocketChannel;
     private final AcceptorHandler acceptorHandler;
     private final ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(0), new ThreadPoolExecutor.AbortPolicy());
 
-    public EchoServerReactor(int port) throws IOException {
+    public MultiThreadEchoServerReactor(int port) throws IOException {
         selector = Selector.open();
         serverSocketChannel = ServerSocketChannel.open();
         acceptorHandler = new AcceptorHandler();
