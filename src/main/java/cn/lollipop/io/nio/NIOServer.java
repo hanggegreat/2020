@@ -11,7 +11,9 @@ import java.util.Iterator;
 @Slf4j
 public class NIOServer {
 
-    // 定义属性
+    /**
+     * 定义属性
+     */
     private Selector selector;
     private ServerSocketChannel serverSocketChannel;
     private final static int PORT = 8888;
@@ -20,9 +22,12 @@ public class NIOServer {
     public NIOServer() throws IOException {
         selector = Selector.open();
         serverSocketChannel = ServerSocketChannel.open();
-        serverSocketChannel.bind(new InetSocketAddress(PORT)); // 绑定端口
-        serverSocketChannel.configureBlocking(false); // 设置非阻塞
-        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT); // 注册
+        // 绑定端口
+        serverSocketChannel.bind(new InetSocketAddress(PORT));
+        // 设置非阻塞
+        serverSocketChannel.configureBlocking(false);
+        // 注册
+        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
     }
 
     public void start() throws IOException {
@@ -71,7 +76,8 @@ public class NIOServer {
         } catch (IOException e) {
             try {
                 log.info("{} 离线了...", channel.getRemoteAddress());
-                key.cancel(); // 取消注册
+                // 取消注册
+                key.cancel();
                 channel.close();
             } catch (IOException e2) {
                 log.error(e2.getMessage());
