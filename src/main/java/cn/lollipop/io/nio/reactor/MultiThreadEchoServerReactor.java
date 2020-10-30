@@ -9,6 +9,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.util.Iterator;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,7 +25,9 @@ public class MultiThreadEchoServerReactor {
     private AtomicInteger next = new AtomicInteger();
     private Selector[] selectors = new Selector[2];
     private final AcceptorHandler acceptorHandler;
-    private final ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 1, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10), new ThreadPoolExecutor.AbortPolicy());
+    private final ThreadPoolExecutor executor = new ThreadPoolExecutor(2, 2, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10), new ThreadPoolExecutor.AbortPolicy());
+
+    private CountDownLatch latch = new CountDownLatch(2);
 
     public MultiThreadEchoServerReactor(int port) throws IOException {
         selectors[0] = Selector.open();
@@ -65,6 +68,8 @@ public class MultiThreadEchoServerReactor {
                     }
                 } catch (IOException e) {
                     log.error(e.getMessage());
+                } finally {
+                    latch.countDown();
                 }
             });
         }
@@ -75,7 +80,9 @@ public class MultiThreadEchoServerReactor {
         handler.accept(serverSocketChannel, selectors[next.getAndSet(next.get() + 1 % selectors.length)]);
     }
 
-    public static void main(String[] args) throws IOException {
-        new MultiThreadEchoServerReactor(6869).start();
+    public static void main(String[] args) throws Exception {
+        MultiThreadEchoServerReactor multiThreadEchoServerReactor = new MultiThreadEchoServerReactor(6869);
+        multiThreadEchoServerReactor.start();
+        multiThreadEchoServerReactor.latch.await();
     }
 }
