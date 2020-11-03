@@ -56,8 +56,7 @@ public class ClientSession {
      * @param pkg message
      */
     public static void loginSuccess(ChannelHandlerContext ctx, ProtoMsg.Message pkg) {
-        Channel channel = ctx.channel();
-        ClientSession session = channel.attr(ClientSession.SESSION_KEY).get();
+        ClientSession session = getSession(ctx);
         session.setSessionId(pkg.getSessionId());
         session.setLogin(true);
         log.info("登录成功");
@@ -89,8 +88,7 @@ public class ClientSession {
     }
 
     public void writeAndClose(Object pkg) {
-        ChannelFuture future = channel.writeAndFlush(pkg);
-        future.addListener(ChannelFutureListener.CLOSE);
+        channel.writeAndFlush(pkg).addListener(ChannelFutureListener.CLOSE);
     }
 
     /**
@@ -99,12 +97,13 @@ public class ClientSession {
     public void close() {
         isConnected = false;
 
-        ChannelFuture future = channel.close();
-        future.addListener((ChannelFutureListener) future1 -> {
-            if (future1.isSuccess()) {
-                log.error("连接顺利断开");
-            }
-        });
+        channel
+                .close()
+                .addListener((ChannelFutureListener) future1 -> {
+                    if (future1.isSuccess()) {
+                        log.error("连接顺利断开");
+                    }
+                });
     }
 
 }

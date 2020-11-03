@@ -3,16 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>2020</artifactId>
+        <artifactId>simple-im</artifactId>
         <groupId>cn.lollipop</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <packaging>pom</packaging>
-    <modules>
-        <module>simple-im-common</module>
-        <module>simple-im-client</module>
-    </modules>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>simple-im</artifactId>
+    <artifactId>simple-im-server</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.lollipop</groupId>
+            <artifactId>simple-im-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+
 </project>

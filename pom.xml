@@ -11,6 +11,7 @@
     <modules>
         <module>demo</module>
         <module>simple-im</module>
+        <module>simple-im-server</module>
     </modules>
 
     <parent>

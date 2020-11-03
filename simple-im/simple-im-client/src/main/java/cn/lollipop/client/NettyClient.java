@@ -68,29 +68,30 @@ public class NettyClient {
         try {
             b = new Bootstrap();
 
-            b.group(g);
-            b.channel(NioSocketChannel.class);
-            b.option(ChannelOption.SO_KEEPALIVE, true);
-            b.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
-            b.remoteAddress(IP, PORT);
-
-            // 设置通道初始化
-            b.handler(
-                    new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        public void initChannel(SocketChannel ch) {
-                            ch.pipeline().addLast("decoder", new ProtobufDecoder());
-                            ch.pipeline().addLast("encoder", new ProtobufEncoder());
-                            ch.pipeline().addLast(loginResponseHandler);
-                            ch.pipeline().addLast(chatMsgHandler);
-                            ch.pipeline().addLast(exceptionHandler);
-                        }
-                    }
-            );
+            b
+                    .group(g)
+                    .channel(NioSocketChannel.class)
+                    .option(ChannelOption.SO_KEEPALIVE, true)
+                    .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                    .remoteAddress(IP, PORT)
+                    // 设置通道初始化
+                    .handler(
+                            new ChannelInitializer<SocketChannel>() {
+                                @Override
+                                public void initChannel(SocketChannel ch) {
+                                    ch.pipeline().addLast("decoder", new ProtobufDecoder());
+                                    ch.pipeline().addLast("encoder", new ProtobufEncoder());
+                                    ch.pipeline().addLast(loginResponseHandler);
+                                    ch.pipeline().addLast(chatMsgHandler);
+                                    ch.pipeline().addLast(exceptionHandler);
+                                }
+                            }
+                    );
 
             log.info("客户端开始连接");
 
-            b.connect()
+            b
+                    .connect()
                     .addListener(connectedListener)
                     .channel()
                     .closeFuture()

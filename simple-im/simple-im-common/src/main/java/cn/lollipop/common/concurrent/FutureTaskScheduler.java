@@ -7,12 +7,12 @@ import java.util.concurrent.*;
 @Slf4j
 public class FutureTaskScheduler extends Thread {
     // 任务队列
-    private ConcurrentLinkedQueue<ExecuteTask> executeTaskQueue = new ConcurrentLinkedQueue<ExecuteTask>();
+    private ConcurrentLinkedQueue<ExecuteTask> executeTaskQueue = new ConcurrentLinkedQueue<>();
     // 线程休眠时间
     private long sleepTime = 200;
     private ExecutorService pool = new ThreadPoolExecutor(10, 10, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10), new ThreadPoolExecutor.AbortPolicy());
 
-    private static FutureTaskScheduler inst = new FutureTaskScheduler();
+    private static final FutureTaskScheduler inst = new FutureTaskScheduler();
 
     private FutureTaskScheduler() {
         this.start();
@@ -66,19 +66,6 @@ public class FutureTaskScheduler extends Thread {
      * @param executeTask
      */
     private void handleTask(ExecuteTask executeTask) {
-        pool.execute(new ExecuteRunnable(executeTask));
-    }
-
-    class ExecuteRunnable implements Runnable {
-        ExecuteTask executeTask;
-
-        ExecuteRunnable(ExecuteTask executeTask) {
-            this.executeTask = executeTask;
-        }
-
-        @Override
-        public void run() {
-            executeTask.execute();
-        }
+        pool.execute(executeTask::execute);
     }
 }

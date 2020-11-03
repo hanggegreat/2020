@@ -11,7 +11,6 @@ import io.netty.channel.EventLoop;
 import io.netty.util.concurrent.GenericFutureListener;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -76,6 +75,8 @@ public class CommandController {
         this.loginSender = loginSender;
         initConnectedListener();
         initCloseListener();
+        initCommandMap();
+        startCommandThread();
     }
 
     private void initConnectedListener() {
@@ -171,8 +172,7 @@ public class CommandController {
         }
     }
 
-    public void startCommandThread()
-            throws InterruptedException {
+    public void startCommandThread() {
         Thread.currentThread().setName("命令线程");
 
         while (true) {
