@@ -11,6 +11,7 @@
     <modules>
         <module>simple-im-common</module>
         <module>simple-im-client</module>
+        <module>simple-im-server</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 

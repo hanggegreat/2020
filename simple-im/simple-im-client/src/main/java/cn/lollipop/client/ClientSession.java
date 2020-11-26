@@ -97,8 +97,7 @@ public class ClientSession {
     public void close() {
         isConnected = false;
 
-        channel
-                .close()
+        channel.close()
                 .addListener((ChannelFutureListener) future1 -> {
                     if (future1.isSuccess()) {
                         log.error("连接顺利断开");
